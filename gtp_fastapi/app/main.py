@@ -2,7 +2,10 @@ from typing import Optional
 
 from fastapi import FastAPI
 
+from exponenetial_regression.controller.exponential_regression_controller import exponentialRegressionRouter
+
 app = FastAPI()
+app.include_router(exponentialRegressionRouter)
 
 @app.get("/")
 def read_root():
