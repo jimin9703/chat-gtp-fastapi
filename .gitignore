@@ -314,3 +314,8 @@ pyrightconfig.json
 
 # exclude *.svg
 *.svg
+
+# exclude *.pem
+*.pem
+*.crt
+*.key
