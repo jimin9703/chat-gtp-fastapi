@@ -6,7 +6,10 @@ from starlette.middleware.cors import CORSMiddleware
 
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 
+from exponenetial_regression.controller.exponential_regression_controller import exponentialRegressionRouter
+
 app = FastAPI()
+app.include_router(exponentialRegressionRouter)
 
 app.include_router(exponentialRegressionRouter)
 
