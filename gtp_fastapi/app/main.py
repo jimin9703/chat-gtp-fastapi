@@ -1,16 +1,33 @@
-from typing import Optional
+import os
 
+from dotenv import load_dotenv
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
+from openai.controller.openai_controller import openAIRouter
 
 from exponenetial_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 
 app = FastAPI()
 app.include_router(exponentialRegressionRouter)
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+app.include_router(exponentialRegressionRouter)
+app.include_router(openAIRouter)
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-    return {"item_id": item_id, "q": q}
+load_dotenv()
+
+origins = os.getenv("ALLOWED_ORIGINS", "").split(",")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="192.168.0.35", port=33333)
