@@ -2,9 +2,10 @@ import os
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
-from starlette.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
+from openai.controller.openai_controller import openAIRouter
 
 from exponenetial_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 
@@ -12,6 +13,7 @@ app = FastAPI()
 app.include_router(exponentialRegressionRouter)
 
 app.include_router(exponentialRegressionRouter)
+app.include_router(openAIRouter)
 
 load_dotenv()
 
@@ -24,3 +26,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="192.168.0.35", port=33333)
