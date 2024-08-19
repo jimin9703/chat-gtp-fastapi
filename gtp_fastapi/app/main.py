@@ -7,10 +7,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 from openai.controller.openai_controller import openAIRouter
 
-from exponenetial_regression.controller.exponential_regression_controller import exponentialRegressionRouter
+
 
 app = FastAPI()
-app.include_router(exponentialRegressionRouter)
 
 app.include_router(exponentialRegressionRouter)
 app.include_router(openAIRouter)
