@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class OpenAIBasicRepository(ABC):
-    def generateText(self, userInput):
+class OpenAIRepository(ABC):
+    @abstractmethod
+    def getResult(self, userDefinedReceiverFastAPIChannel):
         pass

@@ -1,21 +1,28 @@
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
+import os
+import sys
+
+from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 
-from openai.controller.request_form.openai_request_form import OpenAITalkRequestForm
-from openai.service.openai_service_impl import OpenAIBasicServiceImpl
+from openai.service.openai_service_impl import OpenAIServiceImpl
+from user_defined_queue.repository.user_defined_queue_repository_impl import UserDefinedQueueRepositoryImpl
+from template.include.socket_server.utility.color_print import ColorPrinter
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'template'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'template', 'include', 'socket_server'))
+
 
 openAIRouter = APIRouter()
 
-async def injectOpenAIBasicService() -> OpenAIBasicServiceImpl:
-    return OpenAIBasicServiceImpl()
+async def injectOpenAIService() -> OpenAIServiceImpl:
+    return OpenAIServiceImpl(UserDefinedQueueRepositoryImpl.getInstance())
 
-@openAIRouter.post("/openai")
-async def talkWithOpenAI(openAITalkRequestForm: OpenAITalkRequestForm,
-                         openAIBasicService: OpenAIBasicServiceImpl =
-                         Depends(injectOpenAIBasicService)):
+@openAIRouter.get('/openai-answer')
+async def requestOpenAIResult(openAIService: OpenAIServiceImpl =
+                                 Depends(injectOpenAIService)):
 
-    print(f"controller -> talkWithOpenAI(): openAITalkRequestForm: {openAITalkRequestForm}")
+    ColorPrinter.print_important_message("requestOpenAITestResult()")
 
-    openAIGeneratedText = await openAIBasicService.testai(openAITalkRequestForm.userInput)
+    generatedOpenAIResult = openAIService.requestOpenAIResult()
 
-    return JSONResponse(content=openAIGeneratedText, status_code=status.HTTP_200_OK)
+    return JSONResponse(content=generatedOpenAIResult, status_code=status.HTTP_200_OK)

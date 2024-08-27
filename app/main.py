@@ -11,6 +11,7 @@ from fastapi import FastAPI
 
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 from openai.controller.openai_controller import openAIRouter
+from user_defined_initializer.init import UserDefinedInitializer
 
 # 내부 로직을 import 하여 사용할 때 아래 path를 인식시켜줘야함
 # 고로 내부 로직은 이 라인 하위에 import 해야 합니다.
@@ -25,6 +26,7 @@ from template.task_manager.manager import TaskManager
 
 DomainInitializer.initEachDomain()
 SystemInitializer.initSystemDomain()
+UserDefinedInitializer.initUserDefinedDomain()
 
 app = FastAPI()
 
