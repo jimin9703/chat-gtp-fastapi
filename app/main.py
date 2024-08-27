@@ -1,5 +1,6 @@
 import os.path
 import sys
+
 from fastapi.middleware.cors import CORSMiddleware
 
 import colorama
@@ -8,14 +9,19 @@ import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI
 
+from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
+from openai.controller.openai_controller import openAIRouter
+
+# 내부 로직을 import 하여 사용할 때 아래 path를 인식시켜줘야함
+# 고로 내부 로직은 이 라인 하위에 import 해야 합니다.
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'template'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'template', 'include', 'socket_server'))
 
 from template.deep_learning.controller.deep_learning_controller import deepLearningRouter
 from template.dice.controller.dice_controller import diceResultRouter
+from template.include.socket_server.initializer.init_domain import DomainInitializer
 from template.system_initializer.init import SystemInitializer
 from template.task_manager.manager import TaskManager
-from template.include.socket_server.initializer.init_domain import DomainInitializer
 
 DomainInitializer.initEachDomain()
 SystemInitializer.initSystemDomain()
@@ -36,6 +42,9 @@ app.add_middleware(
 
 app.include_router(deepLearningRouter)
 app.include_router(diceResultRouter)
+
+app.include_router(exponentialRegressionRouter)
+app.include_router(openAIRouter)
 
 if __name__ == "__main__":
     colorama.init(autoreset=True)
