@@ -9,7 +9,6 @@ import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI
 
-from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 from openai.controller.openai_controller import openAIRouter
 from user_defined_initializer.init import UserDefinedInitializer
 
@@ -45,7 +44,6 @@ app.add_middleware(
 app.include_router(deepLearningRouter)
 app.include_router(diceResultRouter)
 
-app.include_router(exponentialRegressionRouter)
 app.include_router(openAIRouter)
 
 if __name__ == "__main__":
